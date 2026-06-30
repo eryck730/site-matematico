@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Solver Pro - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: #1e293b;
+            padding: 45px 40px;
+            border-radius: 24px;
+            border: 1px solid #334155;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box .logo {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .login-box .logo h1 {
+            font-size: 32px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-box .logo span {
+            font-size: 38px;
+        }
+
+        .login-box .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-box label {
+            display: block;
+            color: #94a3b8;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background: #0f172a;
+            color: white;
+            font-size: 15px;
+            margin-bottom: 18px;
+            transition: all 0.3s;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .login-box input::placeholder {
+            color: #64748b;
+        }
+
+        .login-box .btn-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .login-box .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .login-box .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .login-box .register-link {
+            text-align: center;
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .login-box .register-link .link {
+            color: #3b82f6;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-box .register-link .link:hover {
+            text-decoration: underline;
+            color: #60a5fa;
+        }
+
+        .login-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-bottom: 12px;
+            display: none;
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #ef4444;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .login-success {
+            color: #22c55e;
+            font-size: 13px;
+            margin-bottom: 12px;
+            display: none;
+            padding: 10px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #22c55e;
+        }
+
+        .login-success.show {
+            display: block;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle .toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .password-toggle .toggle-btn:hover {
+            color: #f1f5f9;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #334155;
+        }
+
+        .separator::before {
+            margin-right: 15px;
+        }
+
+        .separator::after {
+            margin-left: 15px;
+        }
+
+        .login-box .guest-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background: transparent;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-box .guest-btn:hover {
+            border-color: #3b82f6;
+            color: white;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .login-box .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+            .login-box .logo h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h1><span>🧠</span> Math Solver</h1>
+            </div>
+            <p class="subtitle">Entre para salvar seu progresso</p>
+            
+            <div id="loginError" class="login-error">⚠️ Usuário ou senha incorretos!</div>
+            <div id="loginSuccess" class="login-success">✅ Login realizado com sucesso!</div>
+
+            <form id="loginForm" onsubmit="return fazerLogin(event)">
+                <label>👤 Usuário</label>
+                <input type="text" id="loginUser" placeholder="Digite seu usuário" required autofocus>
+                
+                <label>🔒 Senha</label>
+                <div class="password-toggle">
+                    <input type="password" id="loginPass" placeholder="Digite sua senha" required>
+                    <button type="button" class="toggle-btn" onclick="togglePassword()">👁️</button>
+                </div>
+                
+                <button type="submit" class="btn-login">🚀 Entrar</button>
+            </form>
+
+            <div class="separator">ou</div>
+
+            <button class="guest-btn" onclick="entrarComoConvidado()">👤 Entrar como Convidado</button>
+
+            <div class="register-link">
+                Não tem conta? <span class="link" onclick="mostrarRegistro()">Cadastre-se</span>
+            </div>
+
+            <div class="footer">
+                © 2024 Math Solver Pro - Todos os direitos reservados
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== SISTEMA DE LOGIN ====================
+
+        // Usuários cadastrados (em produção, use um banco de dados)
+        let usuarios = JSON.parse(localStorage.getItem('math_users') || '{}');
+
+        // Verifica se já está logado
+        const usuarioLogado = sessionStorage.getItem('math_user');
+        if (usuarioLogado) {
+            window.location.href = 'index.html';
+        }
+
+        function fazerLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            const successDiv = document.getElementById('loginSuccess');
+
+            // Esconde mensagens anteriores
+            errorDiv.classList.remove('show');
+            successDiv.classList.remove('show');
+
+            if (!user || !pass) {
+                errorDiv.textContent = '⚠️ Preencha todos os campos!';
+                errorDiv.classList.add('show');
+                return false;
+            }
+
+            // Verifica se o usuário existe
+            if (usuarios[user] && usuarios[user] === pass) {
+                sessionStorage.setItem('math_user', user);
+                successDiv.textContent = '✅ Login realizado com sucesso! Redirecionando...';
+                successDiv.classList.add('show');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                return false;
+            }
+
+            errorDiv.textContent = '⚠️ Usuário ou senha incorretos!';
+            errorDiv.classList.add('show');
+            return false;
+        }
+
+        function mostrarRegistro() {
+            const user = prompt('👤 Digite o nome do novo usuário:');
+            if (!user) return;
+            
+            if (usuarios[user]) {
+                alert('⚠️ Usuário já existe!');
+                return;
+            }
+
+            const pass = prompt('🔒 Digite a senha:');
+            if (!pass) return;
+
+            const confirmPass = prompt('🔒 Confirme a senha:');
+            if (pass !== confirmPass) {
+                alert('⚠️ As senhas não coincidem!');
+                return;
+            }
+
+            usuarios[user] = pass;
+            localStorage.setItem('math_users', JSON.stringify(usuarios));
+            alert('✅ Usuário cadastrado com sucesso! Faça login.');
+        }
+
+        function entrarComoConvidado() {
+            sessionStorage.setItem('math_user', 'convidado');
+            window.location.href = 'index.html';
+        }
+
+        function togglePassword() {
+            const passInput = document.getElementById('loginPass');
+            const btn = document.querySelector('.toggle-btn');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                btn.textContent = '🫣';
+            } else {
+                passInput.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        // Enter key para submeter o formulário
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const form = document.getElementById('loginForm');
+                if (form) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+    </script>
+</body>
+</html>

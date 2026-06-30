@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Solver Pro - IA Completa</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+     
+    <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
+     <script src="js/script.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="logo"><span>🧠</span> Math Solver</div>
+        
+        <div class="user-info">
+            <span class="name" id="userNameDisplay">👤 Carregando...</span>
+            <button class="logout" onclick="fazerLogout()">Sair</button>
+        </div>
+        
+        <div class="module-title">📘 Módulo 1 - Básico</div>
+        <button class="tab-btn active" onclick="showTab('equacao1')"><span class="icon">📐</span> Equação 1º Grau</button>
+        <button class="tab-btn" onclick="showTab('equacao2')"><span class="icon">📊</span> Equação 2º Grau</button>
+        <button class="tab-btn" onclick="showTab('pitagoras')"><span class="icon">🔺</span> Pitágoras</button>
+        <button class="tab-btn" onclick="showTab('regra3')"><span class="icon">🔄</span> Regra de 3</button>
+        <button class="tab-btn" onclick="showTab('porcentagem')"><span class="icon">💯</span> Porcentagem</button>
+        <button class="tab-btn" onclick="showTab('mmc_mdc')"><span class="icon">🔢</span> MMC e MDC</button>
+        <button class="tab-btn" onclick="showTab('media')"><span class="icon">📊</span> Média Escolar</button>
+
+        <div class="module-title">📐 Módulo 2 - Geometria</div>
+        <button class="tab-btn" onclick="showTab('area_quadrado')"><span class="icon">⬛</span> Área Quadrado</button>
+        <button class="tab-btn" onclick="showTab('area_retangulo')"><span class="icon">▬</span> Área Retângulo</button>
+        <button class="tab-btn" onclick="showTab('area_triangulo')"><span class="icon">△</span> Área Triângulo</button>
+        <button class="tab-btn" onclick="showTab('area_circulo')"><span class="icon">⭕</span> Área Círculo</button>
+        <button class="tab-btn" onclick="showTab('perimetro')"><span class="icon">📏</span> Perímetros</button>
+        <button class="tab-btn" onclick="showTab('conversor')"><span class="icon">📐</span> Conversor Medidas</button>
+
+        <div class="module-title">📊 Módulo 3 - Trigonometria</div>
+        <button class="tab-btn" onclick="showTab('trigonometria')"><span class="icon">📐</span> Seno/Cosseno/Tangente</button>
+        <button class="tab-btn" onclick="showTab('lei_senos')"><span class="icon">📏</span> Lei dos Senos</button>
+        <button class="tab-btn" onclick="showTab('lei_cossenos')"><span class="icon">📐</span> Lei dos Cossenos</button>
+        <button class="tab-btn" onclick="showTab('funcao1')"><span class="icon">📈</span> Função 1º Grau</button>
+        <button class="tab-btn" onclick="showTab('funcao2')"><span class="icon">📉</span> Função 2º Grau</button>
+
+        <div class="module-title">🤖 Módulo 4 - IA</div>
+        <button class="tab-btn" onclick="showTab('ocr')"><span class="icon">📷</span> OCR com IA</button>
+
+        <button class="history-btn" onclick="abrirHistorico()">
+            📜 Histórico <span class="badge" id="historyCount">0</span>
+        </button>
+    </div>
+
+    <div class="content" id="contentArea">
+        <!-- ===== EQUAÇÃO 1º GRAU ===== -->
+        <div class="tool active" id="equacao1">
+            <div class="card">
+                <h2>📐 Equação do 1º Grau</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Formato: ax + b = c</p>
+                <div class="input-group">
+                    <div><label>Valor de A</label><input type="number" id="eq1a" step="any" placeholder="ex: 2"></div>
+                    <div><label>Valor de B</label><input type="number" id="eq1b" step="any" placeholder="ex: 3"></div>
+                    <div class="full-width"><label>Valor de C</label><input type="number" id="eq1c" step="any" placeholder="ex: 7"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resolverEquacao1()">Resolver</button>
+                    <button class="btn btn-danger" onclick="limparEquacao1()">Limpar</button>
+                </div>
+                <div id="resultadoEquacao1" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== EQUAÇÃO 2º GRAU ===== -->
+        <div class="tool" id="equacao2">
+            <div class="card">
+                <h2>📊 Equação do 2º Grau</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Formato: ax² + bx + c = 0</p>
+                <div class="input-group">
+                    <div><label>Valor de A</label><input type="number" id="eq2a" step="any" placeholder="ex: 1"></div>
+                    <div><label>Valor de B</label><input type="number" id="eq2b" step="any" placeholder="ex: -5"></div>
+                    <div class="full-width"><label>Valor de C</label><input type="number" id="eq2c" step="any" placeholder="ex: 6"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resolverEquacao2()">Resolver</button>
+                    <button class="btn btn-danger" onclick="limparEquacao2()">Limpar</button>
+                </div>
+                <div id="resultadoEquacao2" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== PITÁGORAS ===== -->
+        <div class="tool" id="pitagoras">
+            <div class="card">
+                <h2>🔺 Teorema de Pitágoras</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">a² + b² = h² (Preencha 2 valores)</p>
+                <div class="input-group">
+                    <div><label>Cateto A</label><input type="number" id="catA" step="any" placeholder="ex: 3"></div>
+                    <div><label>Cateto B</label><input type="number" id="catB" step="any" placeholder="ex: 4"></div>
+                    <div class="full-width"><label>Hipotenusa</label><input type="number" id="hip" step="any" placeholder="ex: 5"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resolverPitagoras()">Resolver</button>
+                    <button class="btn btn-danger" onclick="limparPitagoras()">Limpar</button>
+                </div>
+                <div id="resultadoPitagoras" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== REGRA DE 3 ===== -->
+        <div class="tool" id="regra3">
+            <div class="card">
+                <h2>🔄 Regra de 3 Simples</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">A : B = C : X</p>
+                <div class="input-group">
+                    <div><label>Valor A</label><input type="number" id="rA" step="any" placeholder="ex: 2"></div>
+                    <div><label>Valor B</label><input type="number" id="rB" step="any" placeholder="ex: 4"></div>
+                    <div class="full-width"><label>Valor C</label><input type="number" id="rC" step="any" placeholder="ex: 6"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resolverRegra3()">Resolver</button>
+                    <button class="btn btn-danger" onclick="limparRegra3()">Limpar</button>
+                </div>
+                <div id="resultadoRegra3" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== PORCENTAGEM ===== -->
+        <div class="tool" id="porcentagem">
+            <div class="card">
+                <h2>💯 Calculadora de Porcentagem</h2>
+                <div class="input-group">
+                    <div class="full-width"><label>Tipo de Cálculo</label>
+                        <select id="tipoPorcentagem">
+                            <option value="1">Quanto é X% de Y?</option>
+                            <option value="2">X é qual % de Y?</option>
+                            <option value="3">Aumento/Desconto</option>
+                        </select>
+                    </div>
+                    <div><label>Primeiro Valor</label><input type="number" id="p1" step="any" placeholder="ex: 20"></div>
+                    <div><label>Segundo Valor</label><input type="number" id="p2" step="any" placeholder="ex: 200"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="resolverPorcentagem()">Resolver</button>
+                    <button class="btn btn-danger" onclick="limparPorcentagem()">Limpar</button>
+                </div>
+                <div id="resultadoPorcentagem" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== MMC e MDC ===== -->
+        <div class="tool" id="mmc_mdc">
+            <div class="card">
+                <h2>🔢 MMC e MDC</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Mínimo Múltiplo Comum e Máximo Divisor Comum</p>
+                <div class="input-group">
+                    <div><label>Número 1</label><input type="number" id="mmc1" placeholder="ex: 12"></div>
+                    <div><label>Número 2</label><input type="number" id="mmc2" placeholder="ex: 18"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularMMCMDC()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparMMCMDC()">Limpar</button>
+                </div>
+                <div id="resultadoMMCMDC" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== MÉDIA ESCOLAR ===== -->
+        <div class="tool" id="media">
+            <div class="card">
+                <h2>📊 Média Escolar</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Calcule a média e situação do aluno</p>
+                <div class="input-group grid-4">
+                    <div><label>Nota 1</label><input type="number" id="n1" step="0.1" min="0" max="10" placeholder="7.5"></div>
+                    <div><label>Nota 2</label><input type="number" id="n2" step="0.1" min="0" max="10" placeholder="8.0"></div>
+                    <div><label>Nota 3</label><input type="number" id="n3" step="0.1" min="0" max="10" placeholder="6.5"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularMedia()">Calcular Média</button>
+                    <button class="btn btn-danger" onclick="limparMedia()">Limpar</button>
+                </div>
+                <div id="resultadoMedia" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== ÁREA DO QUADRADO ===== -->
+        <div class="tool" id="area_quadrado">
+            <div class="card">
+                <h2>⬛ Área do Quadrado</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Área = Lado²</p>
+                <div class="input-group">
+                    <div class="full-width"><label>Lado</label><input type="number" id="quadradoLado" step="any" placeholder="ex: 5"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularAreaQuadrado()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparAreaQuadrado()">Limpar</button>
+                </div>
+                <div id="resultadoQuadrado" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== ÁREA DO RETÂNGULO ===== -->
+        <div class="tool" id="area_retangulo">
+            <div class="card">
+                <h2>▬ Área do Retângulo</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Área = Base × Altura</p>
+                <div class="input-group">
+                    <div><label>Base</label><input type="number" id="retBase" step="any" placeholder="ex: 8"></div>
+                    <div><label>Altura</label><input type="number" id="retAltura" step="any" placeholder="ex: 5"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularAreaRetangulo()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparAreaRetangulo()">Limpar</button>
+                </div>
+                <div id="resultadoRetangulo" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== ÁREA DO TRIÂNGULO ===== -->
+        <div class="tool" id="area_triangulo">
+            <div class="card">
+                <h2>△ Área do Triângulo</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Área = (Base × Altura) / 2</p>
+                <div class="input-group">
+                    <div><label>Base</label><input type="number" id="triBase" step="any" placeholder="ex: 10"></div>
+                    <div><label>Altura</label><input type="number" id="triAltura" step="any" placeholder="ex: 6"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularAreaTriangulo()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparAreaTriangulo()">Limpar</button>
+                </div>
+                <div id="resultadoTriangulo" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== ÁREA DO CÍRCULO ===== -->
+        <div class="tool" id="area_circulo">
+            <div class="card">
+                <h2>⭕ Área do Círculo</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Área = π × Raio²</p>
+                <div class="input-group">
+                    <div class="full-width"><label>Raio</label><input type="number" id="circuloRaio" step="any" placeholder="ex: 7"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularAreaCirculo()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparAreaCirculo()">Limpar</button>
+                </div>
+                <div id="resultadoCirculo" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== PERÍMETROS ===== -->
+        <div class="tool" id="perimetro">
+            <div class="card">
+                <h2>📏 Calculadora de Perímetros</h2>
+                <div class="input-group">
+                    <div class="full-width"><label>Forma Geométrica</label>
+                        <select id="tipoPerimetro">
+                            <option value="quadrado">Quadrado</option>
+                            <option value="retangulo">Retângulo</option>
+                            <option value="triangulo">Triângulo</option>
+                            <option value="circulo">Círculo (Circunferência)</option>
+                        </select>
+                    </div>
+                    <div><label>Valor 1</label><input type="number" id="perim1" step="any" placeholder="Lado/Base/Raio"></div>
+                    <div><label>Valor 2</label><input type="number" id="perim2" step="any" placeholder="Altura (opcional)"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularPerimetro()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparPerimetro()">Limpar</button>
+                </div>
+                <div id="resultadoPerimetro" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== CONVERSOR DE MEDIDAS ===== -->
+        <div class="tool" id="conversor">
+            <div class="card">
+                <h2>📐 Conversor de Medidas</h2>
+                <div class="input-group">
+                    <div class="full-width"><label>Tipo de Conversão</label>
+                        <select id="tipoConversor">
+                            <option value="cm_m">Centímetros ↔ Metros</option>
+                            <option value="m_km">Metros ↔ Quilômetros</option>
+                            <option value="mm_cm">Milímetros ↔ Centímetros</option>
+                            <option value="g_kg">Gramas ↔ Quilogramas</option>
+                            <option value="ml_l">Mililitros ↔ Litros</option>
+                        </select>
+                    </div>
+                    <div><label>Valor</label><input type="number" id="convValor" step="any" placeholder="Digite o valor"></div>
+                    <div><label>Direção</label>
+                        <select id="convDirecao">
+                            <option value="ida">Primeiro → Segundo</option>
+                            <option value="volta">Segundo → Primeiro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="converterMedida()">Converter</button>
+                    <button class="btn btn-danger" onclick="limparConversor()">Limpar</button>
+                </div>
+                <div id="resultadoConversor" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== TRIGONOMETRIA ===== -->
+        <div class="tool" id="trigonometria">
+            <div class="card">
+                <h2>📐 Seno, Cosseno e Tangente</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">Digite um ângulo em graus</p>
+                <div class="input-group">
+                    <div class="full-width"><label>Ângulo (graus)</label><input type="number" id="anguloTrig" step="any" placeholder="ex: 30"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularTrig()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparTrig()">Limpar</button>
+                </div>
+                <div id="resultadoTrig" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== LEI DOS SENOS ===== -->
+        <div class="tool" id="lei_senos">
+            <div class="card">
+                <h2>📏 Lei dos Senos</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">a/sen(A) = b/sen(B) = c/sen(C)</p>
+                <div class="input-group grid-3">
+                    <div><label>Lado a</label><input type="number" id="senoA" step="any" placeholder="ex: 5"></div>
+                    <div><label>Lado b</label><input type="number" id="senoB" step="any" placeholder="ex: 7"></div>
+                    <div><label>Ângulo A (graus)</label><input type="number" id="senoAngA" step="any" placeholder="ex: 30"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularLeiSenos()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparLeiSenos()">Limpar</button>
+                </div>
+                <div id="resultadoLeiSenos" class="result"></div>
+            </div>
+        </div>
+
+        <!-- ===== LEI DOS COSSENOS ===== -->
+        <div class="tool" id="lei_cossenos">
+            <div class="card">
+                <h2>📐 Lei dos Cossenos</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px;">a² = b² + c² - 2bc·cos(A)</p>
+                <div class="input-group grid-3">
+                    <div><label>Lado b</label><input type="number" id="cosB" step="any" placeholder="ex: 6"></div>
+                    <div><label>Lado c</label><input type="number" id="cosC" step="any" placeholder="ex: 8"></div>
+                    <div><label>Ângulo A (graus)</label><input type="number" id="cosAngA" step="any" placeholder="ex: 60"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="calcularLeiCossenos()">Calcular</button>
+                    <button class="btn btn-danger" onclick="limparLeiCossenos()">Limpar</button>
+                </div>
+                <div id="resultadoLeiCossenos" class="result"></div>
+            </div>
+        </div>
+<!-- ===== FUNÇÃO 1º GRAU ===== -->
+<div class="tool" id="funcao1">
+    <div class="card">
+        <h2>📈 Função do 1º Grau</h2>
+        <p style="color: #94a3b8; margin-bottom: 15px;">f(x) = ax + b — com gráfico real</p>
+        <div class="input-group">
+            <div><label>Coeficiente a (inclinação)</label><input type="number" id="func1a" step="any" placeholder="ex: 2"></div>
+            <div><label>Coeficiente b (intercepto)</label><input type="number" id="func1b" step="any" placeholder="ex: 3"></div>
+            <div class="full-width"><label>Valor de x para calcular f(x)</label><input type="number" id="func1x" step="any" placeholder="ex: 5"></div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="calcularFuncao1()">📊 Calcular + Gráfico</button>
+            <button class="btn btn-danger" onclick="limparFuncao1()">Limpar</button>
+        </div>
+        <div id="resultadoFuncao1" class="result"></div>
+        <div class="canvas-wrapper" id="canvasWrapper1" style="display:none;">
+            <canvas id="grafico1" height="300"></canvas>
+            <p class="canvas-label" id="canvasLabel1"></p>
+        </div>
+        <div id="iaWrapper1" style="display:none; margin-top:12px;">
+            <button class="ia-explain-btn" id="iaBtnF1" onclick="explicarComIA('funcao1')">🤖 Explicar com IA</button>
+            <div class="ia-response" id="iaRespF1"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FUNÇÃO 2º GRAU ===== -->
+<div class="tool" id="funcao2">
+    <div class="card">
+        <h2>📉 Função do 2º Grau</h2>
+        <p style="color: #94a3b8; margin-bottom: 15px;">f(x) = ax² + bx + c — com gráfico e raízes</p>
+        <div class="input-group grid-4">
+            <div><label>Coeficiente a</label><input type="number" id="func2a" step="any" placeholder="ex: 1"></div>
+            <div><label>Coeficiente b</label><input type="number" id="func2b" step="any" placeholder="ex: -5"></div>
+            <div><label>Coeficiente c</label><input type="number" id="func2c" step="any" placeholder="ex: 6"></div>
+            <div><label>Valor de x</label><input type="number" id="func2x" step="any" placeholder="ex: 2"></div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="calcularFuncao2()">📊 Calcular + Gráfico</button>
+            <button class="btn btn-danger" onclick="limparFuncao2()">Limpar</button>
+        </div>
+        <div id="resultadoFuncao2" class="result"></div>
+        <div class="canvas-wrapper" id="canvasWrapper2" style="display:none;">
+            <canvas id="grafico2" height="300"></canvas>
+            <p class="canvas-label" id="canvasLabel2"></p>
+        </div>
+        <div id="iaWrapper2" style="display:none; margin-top:12px;">
+            <button class="ia-explain-btn" id="iaBtnF2" onclick="explicarComIA('funcao2')">🤖 Explicar com IA</button>
+            <div class="ia-response" id="iaRespF2"></div>
+        </div>
+    </div>
+</div>
+
+        <!-- ===== OCR COM IA ===== -->
+        <div class="tool" id="ocr">
+            <div class="card">
+                <h2>📷 OCR com IA — Resolva qualquer questão</h2>
+
+                <div style="margin-bottom: 16px;">
+                    <p style="color:#94a3b8;font-size:13px;margin-bottom:10px;">Modo de análise:</p>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button class="modo-btn active" id="modoGroqBtn" onclick="setModoOCR('groq')">
+                            🧠 IA (Groq) <span style="font-size:11px;opacity:0.8;">(gratuito)</span>
+                        </button>
+                        <button class="modo-btn" id="modoLocalBtn" onclick="setModoOCR('local')">
+                            ⚡ Offline
+                        </button>
+                    </div>
+                    <p id="modoDesc" style="color:#64748b;font-size:12px;margin-top:8px;">
+                        🧠 A IA do Groq resolve qualquer questão matemática com passo a passo.
+                    </p>
+                </div>
+
+                <div class="btn-group" style="margin-bottom:15px;">
+                    <button class="btn btn-purple" onclick="abrirCamera()">📸 Tirar Foto</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('ocrInput').click()">📁 Upload</button>
+                </div>
+
+                <div class="ocr-area" id="ocrDropArea">
+                    <div class="icon-upload" id="ocrIcon">📸</div>
+                    <p><strong>Clique ou arraste</strong> uma imagem aqui</p>
+                    <p style="font-size:12px;color:#64748b;">Suporta JPG, PNG, WEBP</p>
+                    <input type="file" id="ocrInput" accept="image/*" style="display:none" onchange="processarOCR(event)">
+                    <video id="videoCamera" style="display:none;max-width:100%;max-height:300px;border-radius:12px;margin-top:10px;" autoplay playsinline></video>
+                    <canvas id="canvasCamera" style="display:none;"></canvas>
+                    <img id="ocrPreview" style="display:none;max-width:100%;max-height:300px;margin-top:10px;border-radius:12px;">
+                </div>
+
+                <div class="ocr-progress" id="ocrProgress">
+                    <p style="color:#94a3b8;font-size:14px;">🔍 Processando... <span id="ocrStatus">0%</span></p>
+                    <div class="bar"><div class="fill" id="ocrProgressBar"></div></div>
+                </div>
+
+                <div class="ocr-result" id="ocrResult">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <h3 style="color:#22c55e;margin:0;">✅ Texto Extraído</h3>
+                        <button onclick="toggleTextoOCR()" style="background:none;border:1px solid #334155;color:#94a3b8;padding:4px 12px;border-radius:8px;cursor:pointer;font-size:12px;" id="toggleTextoBtn">▼ Ver</button>
+                    </div>
+                    <div class="texto-extraido" id="ocrTexto" style="display:none;"></div>
+                </div>
+
+                <div id="ocrQuestoesArea" style="display:none;margin-top:16px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                        <h3 style="color:#f1f5f9;margin:0;font-size:16px;">📋 Questões Detectadas</h3>
+                        <span id="ocrQuestoesCount" style="background:#3b82f6;color:white;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:700;">0</span>
+                    </div>
+                    <div id="ocrQuestoesList"></div>
+                </div>
+
+                <div id="resultadoOCR" class="result" style="margin-top:16px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL HISTÓRICO ===== -->
+<div class="modal-overlay" id="historyModal">
+    <div class="modal">
+        <h2>
+            📜 Histórico de Questões
+            <button class="close" onclick="fecharHistorico()">✕</button>
+        </h2>
+        <div id="historyList"></div>
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn-clear-history" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
+            <button class="btn btn-primary" onclick="fecharHistorico()">Fechar</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
