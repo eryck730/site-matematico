@@ -29,3 +29,4 @@ yarn-debug.log*
 .vercel
 .env*
 backend/api/node_modules/
+backend/api/node_modules/
