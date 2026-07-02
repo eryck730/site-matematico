@@ -5,6 +5,14 @@ if (!usuarioLogado) {
 }
 document.getElementById('userNameDisplay').textContent = `👤 ${usuarioLogado}`;
 
+// ==================== VARIÁVEIS GLOBAIS ====================
+let ocrTextoExtraido = '';
+let ocrImagem = null;
+let streamCamera = null;
+let ocrQuestoes = [];
+let modoOCR = 'groq';
+let dropArea = null;
+
 // ==================== SISTEMA DE HISTÓRICO ====================
 
 function getHistorico() {
@@ -1206,13 +1214,8 @@ function limparFuncao2() {
     document.getElementById('canvasWrapper2').style.display = 'none';
     document.getElementById('iaWrapper2').style.display = 'none';
 }
-// ==================== OCR ====================
-let ocrTextoExtraido = '';
-let ocrImagem = null;
-let streamCamera = null;
-let ocrQuestoes = [];
-let modoOCR = 'groq';
 
+// ==================== OCR ====================
 const dropArea = document.getElementById('ocrDropArea');
 if (dropArea) {
     dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('dragover'); });
