@@ -1,10 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "backend/api/resolver.js": {
-      "runtime": "@vercel/node"
+  "builds": [
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "backend/api/resolver.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
