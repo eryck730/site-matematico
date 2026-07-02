@@ -1,23 +1,17 @@
+cat > vercel.json << 'EOF'
 {
   "version": 2,
   "builds": [
     {
       "src": "frontend/**",
       "use": "@vercel/static"
-    },
-    {
-      "src": "backend/api/resolver.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/api/resolver.js"
-    },
     {
       "src": "/(.*)",
       "dest": "/frontend/$1"
     }
   ]
 }
+EOF
