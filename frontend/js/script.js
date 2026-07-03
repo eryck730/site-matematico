@@ -1,6 +1,6 @@
 // ==================== CONFIGURAÇÃO DO BACKEND ====================
 // Troque pela URL real do seu projeto na Vercel após o deploy
-const BACKEND_URL = 'https://site-matematico-nu.vercel.app/api/resolver';
+const BACKEND_URL = 'https://site-matematico-ib6if8ngo-erycks-projects-7b4add45.vercel.app/index.html';
 
 // ==================== VERIFICA LOGIN ====================
 const usuarioLogado = sessionStorage.getItem('math_user');
