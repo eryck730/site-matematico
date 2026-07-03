@@ -137,20 +137,75 @@ function resolverEquacao2() {
     const b = parseFloat(document.getElementById('eq2b').value);
     const c = parseFloat(document.getElementById('eq2c').value);
     const resultDiv = document.getElementById('resultadoEquacao2');
-    if (isNaN(a) || isNaN(b) || isNaN(c)) { resultDiv.innerHTML = '<div class="error">⚠️ Preencha todos os campos!</div>'; resultDiv.classList.add('show'); return; }
-    if (a === 0) { resultDiv.innerHTML = '<div class="error">⚠️ "A" não pode ser zero!</div>'; resultDiv.classList.add('show'); return; }
+
+    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        resultDiv.innerHTML = '<div class="error">⚠️ Preencha todos os campos!</div>';
+        resultDiv.classList.add('show'); return;
+    }
+    if (a === 0) {
+        resultDiv.innerHTML = '<div class="error">⚠️ "A" não pode ser zero!</div>';
+        resultDiv.classList.add('show'); return;
+    }
+
     const delta = b*b - 4*a*c;
-    let html = `<div class="success-badge">✅ SOLUÇÃO</div><div class="step-box"><b>📌 Delta:</b><br>Δ = (${b})² - 4×${a}×${c} = <span class="highlight-step">${delta}</span></div>`;
+    const sinalB = b >= 0 ? '+' : '';
+    const sinalC = c >= 0 ? '+' : '';
+
+    let html = `<div class="success-badge">✅ SOLUÇÃO</div>`;
+
+    // Passo a passo do Delta
+    html += `<div class="step-box">
+        <b>📌 Passo 1 — Identificar coeficientes:</b><br>
+        <span class="step-number">a</span> a = ${a}<br>
+        <span class="step-number">b</span> b = ${b}<br>
+        <span class="step-number">c</span> c = ${c}<br><br>
+        <b>📌 Passo 2 — Calcular o Delta (Δ):</b><br>
+        <span class="step-number">1</span> Δ = b² - 4ac<br>
+        <span class="step-number">2</span> Δ = (${b})² - 4 × ${a} × ${c}<br>
+        <span class="step-number">3</span> Δ = ${b*b} - ${4*a*c}<br>
+        <span class="step-number">✅</span> <span class="highlight-step">Δ = ${delta}</span>
+    </div>`;
+
     let resposta = '';
-    if (delta < 0) { html += `<div class="error">⚠️ Δ < 0: Sem raízes reais.</div>`; resposta = 'Sem raízes reais'; }
-    else if (delta === 0) { const x = -b/(2*a); html += `<div class="highlight-result">x = ${x} (raiz dupla)</div>`; resposta = `x = ${x}`; }
-    else {
-        const x1 = (-b+Math.sqrt(delta))/(2*a), x2 = (-b-Math.sqrt(delta))/(2*a);
-        html += `<div class="function-result"><div class="card-result"><div class="label">X₁</div><div class="value blue">${x1.toFixed(4)}</div></div><div class="card-result"><div class="label">X₂</div><div class="value green">${x2.toFixed(4)}</div></div></div>`;
+
+    if (delta < 0) {
+        html += `<div class="error">⚠️ Δ = ${delta} &lt; 0 — Não existem raízes reais!</div>`;
+        html += `<div class="step-box" style="border-left-color:#ef4444;">Como Δ é negativo, a equação <b>${a}x² ${sinalB} ${b}x ${sinalC} ${c} = 0</b> não possui solução real.</div>`;
+        resposta = 'Sem raízes reais (Δ < 0)';
+
+    } else if (delta === 0) {
+        const x = -b / (2*a);
+        html += `<div class="highlight-result">x = ${x} (raiz dupla)</div>`;
+        html += `<div class="step-box">
+            <b>📌 Passo 3 — Calcular a raiz (Δ = 0, raiz dupla):</b><br>
+            <span class="step-number">1</span> x = -b / (2a)<br>
+            <span class="step-number">2</span> x = -(${b}) / (2 × ${a})<br>
+            <span class="step-number">3</span> x = ${-b} / ${2*a}<br>
+            <span class="step-number">✅</span> <span class="highlight-step">x = ${x}</span>
+        </div>`;
+        resposta = `x = ${x} (raiz dupla)`;
+
+    } else {
+        const x1 = (-b + Math.sqrt(delta)) / (2*a);
+        const x2 = (-b - Math.sqrt(delta)) / (2*a);
+        html += `<div class="function-result">
+            <div class="card-result"><div class="label">📌 X₁</div><div class="value blue">${x1.toFixed(4)}</div></div>
+            <div class="card-result"><div class="label">📌 X₂</div><div class="value green">${x2.toFixed(4)}</div></div>
+        </div>`;
+        html += `<div class="step-box">
+            <b>📌 Passo 3 — Calcular as raízes (fórmula de Bhaskara):</b><br>
+            <span class="step-number">1</span> x = (-b ± √Δ) / (2a)<br>
+            <span class="step-number">2</span> x = (-(${b}) ± √${delta}) / (2 × ${a})<br>
+            <span class="step-number">3</span> x = (${-b} ± ${Math.sqrt(delta).toFixed(4)}) / ${2*a}<br><br>
+            <span class="step-number">x₁</span> x₁ = (${-b} + ${Math.sqrt(delta).toFixed(4)}) / ${2*a} = ${((-b)+Math.sqrt(delta)).toFixed(4)} / ${2*a} = <span class="highlight-step">${x1.toFixed(4)}</span><br>
+            <span class="step-number">x₂</span> x₂ = (${-b} - ${Math.sqrt(delta).toFixed(4)}) / ${2*a} = ${((-b)-Math.sqrt(delta)).toFixed(4)} / ${2*a} = <span class="highlight-step">${x2.toFixed(4)}</span>
+        </div>`;
         resposta = `x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`;
     }
-    resultDiv.innerHTML = html; resultDiv.classList.add('show');
-    adicionarHistorico('Equação 2º Grau', `${a}x² + ${b}x + ${c} = 0`, resposta);
+
+    resultDiv.innerHTML = html;
+    resultDiv.classList.add('show');
+    adicionarHistorico('Equação 2º Grau', `${a}x² ${sinalB} ${b}x ${sinalC} ${c} = 0`, resposta);
 }
 function limparEquacao2() { ['eq2a','eq2b','eq2c'].forEach(id => document.getElementById(id).value = ''); document.getElementById('resultadoEquacao2').classList.remove('show'); }
 
