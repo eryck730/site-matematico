@@ -116,6 +116,11 @@ app.get('/api/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
     });
+});
 
-    module.exports = app;
-})
+// ===== INICIAR SERVIDOR =====
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
+    console.log(`🧠 POST /api/resolver`);
+    console.log(`❤️  GET /api/health`);
+});
